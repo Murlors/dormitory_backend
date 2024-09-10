@@ -37,4 +37,16 @@ public class StudentController {
             return Result.error("-1", "用户名或密码错误");
         }
     }
+
+    @ApiOperation(value = "学生统计 用于首页顶部")
+    @GetMapping("/stuNum")
+    public Result<?> stuNum() {
+        int num = studentService.stuNum();
+        if (num > 0) {
+            return Result.success(num);
+        } else {
+            return Result.error("-1", "查询失败");
+        }
+    }
+
 }

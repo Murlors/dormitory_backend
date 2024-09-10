@@ -9,4 +9,6 @@ public interface StudentService extends IService<Student> {
     //学生登陆
     Student stuLogin(String username, String password);
 
+    //统计学生人数
+    int stuNum();
 }

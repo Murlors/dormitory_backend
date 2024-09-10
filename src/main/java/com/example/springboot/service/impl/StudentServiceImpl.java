@@ -39,4 +39,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
 
+    /**
+     * 主页顶部：学生统计
+     */
+    @Override
+    public int stuNum() {
+        QueryWrapper<Student> qw = new QueryWrapper<>();
+        qw.isNotNull("username");
+        int stuNum = Math.toIntExact(studentMapper.selectCount(qw));
+        return stuNum;
+    }
+
 }

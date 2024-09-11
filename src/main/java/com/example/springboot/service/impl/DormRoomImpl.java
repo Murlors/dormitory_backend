@@ -31,6 +31,45 @@ public class DormRoomImpl extends ServiceImpl<DormRoomMapper, DormRoom> implemen
     }
 
     /**
+     * 添加房间
+     */
+    @Override
+    public int addNewRoom(DormRoom dormRoom) {
+        int insert = dormRoomMapper.insert(dormRoom);
+        return insert;
+    }
+
+    /**
+     * 删除房间
+     */
+    @Override
+    public int deleteRoom(Integer dormRoomId) {
+        int i = dormRoomMapper.deleteById(dormRoomId);
+        return i;
+    }
+
+    /**
+     * 更新房间
+     */
+    @Override
+    public int updateNewRoom(DormRoom dormRoom) {
+        int i = dormRoomMapper.updateById(dormRoom);
+        return i;
+    }
+
+    /**
+     * 查找房间
+     */
+    @Override
+    public Page find(Integer pageNum, Integer pageSize, String search) {
+        Page page = new Page<>(pageNum, pageSize);
+        QueryWrapper<DormRoom> qw = new QueryWrapper<>();
+        qw.like("Dormroom_id", search);
+        Page roomPage = dormRoomMapper.selectPage(page, qw);
+        return roomPage;
+    }
+
+    /**
      * 主页 住宿人数
      */
     @Override

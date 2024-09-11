@@ -26,8 +26,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      */
     @Override
     public Student stuLogin(String username, String password) {
-        // 构建缓存key
-        String cacheKey = "student:login:" + username;
 
         QueryWrapper<Student> qw = new QueryWrapper<>();
         qw.eq("username", username);

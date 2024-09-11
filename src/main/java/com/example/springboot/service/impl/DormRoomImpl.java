@@ -127,9 +127,6 @@ public class DormRoomImpl extends ServiceImpl<DormRoomMapper, DormRoom> implemen
         return count;
     }
 
-
-
-
     /**
      * 根据调宿申请表对房间表内的学生床位进行调整
      */

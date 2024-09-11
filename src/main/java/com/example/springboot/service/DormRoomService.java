@@ -2,6 +2,7 @@ package com.example.springboot.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.springboot.entity.AdjustRoomInfo;
 import com.example.springboot.entity.DormRoom;
 
 
@@ -28,4 +29,17 @@ public interface DormRoomService extends IService<DormRoom> {
     DormRoom judgeHadBed(String username);
     //主页 住宿人数
     Long selectHaveRoomStuNum();
+
+    //根据调宿申请 更新房间住宿信息
+    int adjustRoomUpdate(AdjustRoomInfo adjustRoomInfo);
+
+    // 检查该房间是否满了
+    DormRoom checkRoomState(Integer dormRoomId);
+
+    // 检查房间是否存在
+    DormRoom checkRoomExist(Integer dormRoomId);
+
+    // 检查床位是否有人
+    DormRoom checkBedState(Integer dormRoomId, int bedNum);
+
 }

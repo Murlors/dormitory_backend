@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/room")
@@ -126,6 +127,45 @@ public class DormRoomController {
             return Result.success(count);
         } else {
             return Result.error("-1", "查询首页住宿人数失败");
+        }
+    }
+
+    @ApiOperation(value = "检查房间是否满员")
+    @ApiImplicitParam(name = "dormRoomId", value = "宿舍id", required = true, dataType = "Integer")
+    @GetMapping("/checkRoomState/{dormRoomId}")
+    public Result<?> checkRoomState(@PathVariable Integer dormRoomId) {
+        DormRoom dormRoom = dormRoomService.checkRoomState(dormRoomId);
+        if (dormRoom != null) {
+            return Result.success(dormRoom);
+        } else {
+            return Result.error("-1", "该房间人满了");
+        }
+    }
+
+    @ApiOperation(value = "检查床位是否已经有人")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "dormRoomId", value = "宿舍id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "bedNum", value = "床位号", required = true, dataType = "Integer")
+    })
+    @GetMapping("/checkBedState/{dormRoomId}/{bedNum}")
+    public Result<?> getMyRoom(@PathVariable Integer dormRoomId, @PathVariable int bedNum) {
+        DormRoom dormRoom = dormRoomService.checkBedState(dormRoomId, bedNum);
+        if (dormRoom != null) {
+            return Result.success(dormRoom);
+        } else {
+            return Result.error("-1", "该床位已有人");
+        }
+    }
+
+    @ApiOperation(value = "检查房间是否存在")
+    @ApiImplicitParam(name = "dormRoomId", value = "宿舍id", required = true, dataType = "Integer")
+    @GetMapping("/checkRoomExist/{dormRoomId}")
+    public Result<?> checkRoomExist(@PathVariable Integer dormRoomId) {
+        DormRoom dormRoom = dormRoomService.checkRoomExist(dormRoomId);
+        if (dormRoom != null) {
+            return Result.success(dormRoom);
+        } else {
+            return Result.error("-1", "不存在该房间");
         }
     }
 }

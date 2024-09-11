@@ -19,61 +19,6 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
-    @ApiOperation(value = "添加学生")
-    @ApiImplicitParam(name = "student", value = "学生实体", required = true, dataType = "Student")
-    @PostMapping("/add")
-    public Result<?> add(@RequestBody Student student) {
-        int i = studentService.addNewStudent(student);
-        if (i == 1) {
-            return Result.success();
-        } else {
-            return Result.error("-1", "添加失败");
-        }
-
-    }
-
-    @ApiOperation(value = "更新学生信息")
-    @ApiImplicitParam(name = "student", value = "学生实体", required = true, dataType = "Student")
-    @PutMapping("/update")
-    public Result<?> update(@RequestBody Student student) {
-        int i = studentService.updateNewStudent(student);
-        if (i == 1) {
-            return Result.success();
-        } else {
-            return Result.error("-1", "更新失败");
-        }
-    }
-
-    @ApiOperation(value = "删除学生")
-    @ApiImplicitParam(name = "username", value = "学生用户名", required = true, dataType = "String")
-    @DeleteMapping("/delete/{username}")
-    public Result<?> delete(@PathVariable String username) {
-        int i = studentService.deleteStudent(username);
-        if (i == 1) {
-            return Result.success();
-        } else {
-            return Result.error("-1", "删除失败");
-        }
-    }
-
-    @ApiOperation(value = "查找学生")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "search", value = "搜索关键字", required = true, dataType = "String")
-    })
-    @GetMapping("/find")
-    public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                              @RequestParam(defaultValue = "10") Integer pageSize,
-                              @RequestParam(defaultValue = "") String search) {
-        Page page = studentService.find(pageNum, pageSize, search);
-        if (page != null) {
-            return Result.success(page);
-        } else {
-            return Result.error("-1", "查询失败");
-        }
-    }
-
     @ApiOperation(value = "学生登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "user", value = "学生实体", required = true, dataType = "User"),
@@ -95,7 +40,61 @@ public class StudentController {
         }
     }
 
-    @ApiOperation(value = "学生统计 用于首页顶部")
+    @ApiOperation(value = "新增学生信息")
+    @ApiImplicitParam(name = "student", value = "学生实体", required = true, dataType = "Student")
+    @PostMapping("/add")
+    public Result<?> add(@RequestBody Student student) {
+        int i = studentService.addNewStudent(student);
+        if (i == 1) {
+            return Result.success();
+        } else {
+            return Result.error("-1", "添加失败");
+        }
+    }
+
+    @ApiOperation(value = "删除学生信息")
+    @ApiImplicitParam(name = "username", value = "学生用户名", required = true, dataType = "String")
+    @DeleteMapping("/delete/{username}")
+    public Result<?> delete(@PathVariable String username) {
+        int i = studentService.deleteStudent(username);
+        if (i == 1) {
+            return Result.success();
+        } else {
+            return Result.error("-1", "删除失败");
+        }
+    }
+
+    @ApiOperation(value = "更新学生信息")
+    @ApiImplicitParam(name = "student", value = "学生实体", required = true, dataType = "Student")
+    @PutMapping("/update")
+    public Result<?> update(@RequestBody Student student) {
+        int i = studentService.updateNewStudent(student);
+        if (i == 1) {
+            return Result.success();
+        } else {
+            return Result.error("-1", "更新失败");
+        }
+    }
+
+    @ApiOperation(value = "查询学生信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "search", value = "搜索关键字", required = true, dataType = "String")
+    })
+    @GetMapping("/find")
+    public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                              @RequestParam(defaultValue = "10") Integer pageSize,
+                              @RequestParam(defaultValue = "") String search) {
+        Page page = studentService.find(pageNum, pageSize, search);
+        if (page != null) {
+            return Result.success(page);
+        } else {
+            return Result.error("-1", "查询失败");
+        }
+    }
+
+    @ApiOperation(value = "学生统计，用于首页顶部")
     @GetMapping("/stuNum")
     public Result<?> stuNum() {
         int num = studentService.stuNum();

@@ -10,17 +10,17 @@ public interface StudentService extends IService<Student> {
     //学生登陆
     Student stuLogin(String username, String password);
 
-    //新增学生
+    //新增学生信息
     int addNewStudent(Student student);
 
-    //查询学生
-    Page find(Integer pageNum, Integer pageSize, String search);
+    //删除学生信息
+    int deleteStudent(String username);
 
     //更新学生信息
     int updateNewStudent(Student student);
 
-    //删除学生信息
-    int deleteStudent(String username);
+    //查询学生信息
+    Page find(Integer pageNum, Integer pageSize, String search);
 
     //统计学生人数
     int stuNum();

@@ -41,7 +41,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     /**
-     * 学生新增
+     * 新增学生信息
      */
     @Override
     public int addNewStudent(Student student) {
@@ -50,15 +50,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     /**
-     * 分页查询学生
+     * 删除学生信息
      */
     @Override
-    public Page find(Integer pageNum, Integer pageSize, String search) {
-        Page page = new Page<>(pageNum, pageSize);
-        QueryWrapper<Student> qw = new QueryWrapper<>();
-        qw.like("name", search);
-        Page studentPage = studentMapper.selectPage(page, qw);
-        return studentPage;
+    public int deleteStudent(String username) {
+        int i = studentMapper.deleteById(username);
+        return i;
     }
 
     /**
@@ -71,12 +68,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     /**
-     * 删除学生信息
+     * 分页查询学生信息
      */
     @Override
-    public int deleteStudent(String username) {
-        int i = studentMapper.deleteById(username);
-        return i;
+    public Page find(Integer pageNum, Integer pageSize, String search) {
+        Page page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Student> qw = new QueryWrapper<>();
+        qw.like("name", search);
+        Page studentPage = studentMapper.selectPage(page, qw);
+        return studentPage;
     }
 
     /**

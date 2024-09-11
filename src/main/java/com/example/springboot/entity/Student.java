@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-// 告诉Mybatis-plus，这个类与数据库中的哪张表有关
+// 利用Mybatis-plus，将类与数据库中的某张表绑定
 @TableName(value = "student")
 public class Student {
-    // 告诉Mybatis-plus, 属性对应表中的字段
+    // 利用Mybatis-plus, 对应表中的字段
 
     @TableId(value = "username")
     private String username;

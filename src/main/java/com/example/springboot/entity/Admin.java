@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@TableName(value = "admin")
+@TableName(value = "admin")//绑定数据库中的表
 public class Admin {
-
+    //绑定表中对应字段
     @TableId(value = "username")
     private String username;
     @TableField(value = "password")

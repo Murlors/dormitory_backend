@@ -1,10 +1,12 @@
 package com.example.springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.entity.Student;
 import com.example.springboot.mapper.StudentMapper;
 import com.example.springboot.service.StudentService;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,6 +40,44 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         }
     }
 
+    /**
+     * 学生新增
+     */
+    @Override
+    public int addNewStudent(Student student) {
+        int insert = studentMapper.insert(student);
+        return insert;
+    }
+
+    /**
+     * 分页查询学生
+     */
+    @Override
+    public Page find(Integer pageNum, Integer pageSize, String search) {
+        Page page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Student> qw = new QueryWrapper<>();
+        qw.like("name", search);
+        Page studentPage = studentMapper.selectPage(page, qw);
+        return studentPage;
+    }
+
+    /**
+     * 更新学生信息
+     */
+    @Override
+    public int updateNewStudent(Student student) {
+        int i = studentMapper.updateById(student);
+        return i;
+    }
+
+    /**
+     * 删除学生信息
+     */
+    @Override
+    public int deleteStudent(String username) {
+        int i = studentMapper.deleteById(username);
+        return i;
+    }
 
     /**
      * 主页顶部：学生统计

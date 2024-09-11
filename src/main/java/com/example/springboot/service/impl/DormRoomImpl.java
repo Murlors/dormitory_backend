@@ -70,6 +70,36 @@ public class DormRoomImpl extends ServiceImpl<DormRoomMapper, DormRoom> implemen
     }
 
     /**
+     * 删除床位上的学生信息
+     */
+    @Override
+    public int deleteBedInfo(String bedName, Integer dormRoomId, int calCurrentNum) {
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("dormroom_id", dormRoomId);
+        updateWrapper.set(bedName, null);
+        updateWrapper.set("current_capacity", calCurrentNum - 1);
+        int update = dormRoomMapper.update(null, updateWrapper);
+        return update;
+    }
+
+    /**
+     * 床位信息，查询该学生是否已由床位
+     */
+    @Override
+    public DormRoom judgeHadBed(String username) {
+        QueryWrapper qw = new QueryWrapper();
+        qw.eq("first_bed", username);
+        qw.or();
+        qw.eq("second_bed", username);
+        qw.or();
+        qw.eq("third_bed", username);
+        qw.or();
+        qw.eq("fourth_bed", username);
+        DormRoom dormRoom = dormRoomMapper.selectOne(qw);
+        return dormRoom;
+    }
+
+    /**
      * 主页 住宿人数
      */
     @Override

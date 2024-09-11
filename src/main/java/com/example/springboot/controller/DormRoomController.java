@@ -90,6 +90,34 @@ public class DormRoomController {
         }
     }
 
+    @ApiOperation(value = "删除床位学生信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bedName", value = "床位名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "dormRoomId", value = "宿舍id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "calCurrentNum", value = "当前人数", required = true, dataType = "Integer")
+    })
+    @DeleteMapping("/delete/{bedName}/{dormRoomId}/{calCurrentNum}")
+    public Result<?> deleteBedInfo(@PathVariable String bedName, @PathVariable Integer dormRoomId, @PathVariable int calCurrentNum) {
+        int i = dormRoomService.deleteBedInfo(bedName, dormRoomId, calCurrentNum);
+        if (i == 1) {
+            return Result.success();
+        } else {
+            return Result.error("-1", "删除失败");
+        }
+    }
+
+    @ApiOperation(value = "查询该学生是否已有床位")
+    @ApiImplicitParam(name = "value", value = "学生用户名", required = true, dataType = "String")
+    @GetMapping("/judgeHadBed/{value}")
+    public Result<?> judgeHadBed(@PathVariable String value) {
+        DormRoom dormRoom = dormRoomService.judgeHadBed(value);
+        if (dormRoom == null) {
+            return Result.success();
+        } else {
+            return Result.error("-1", "该学生已有宿舍");
+        }
+    }
+
     @ApiOperation(value = "查询住宿人数 用于首页")
     @GetMapping("/selectHaveRoomStuNum")
     public Result<?> selectHaveRoomStuNum() {

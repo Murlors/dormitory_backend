@@ -21,7 +21,11 @@ public interface DormRoomService extends IService<DormRoom> {
     //查询房间
     Page find(Integer pageNum, Integer pageSize, String search);
 
+    //删除床位上的学生信息
+    int deleteBedInfo(String bedName, Integer dormRoomId, int calCurrentNum);
 
+    //床位信息，查询该学生是否已有宿舍
+    DormRoom judgeHadBed(String username);
     //主页 住宿人数
     Long selectHaveRoomStuNum();
 }

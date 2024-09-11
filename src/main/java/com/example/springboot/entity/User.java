@@ -1,10 +1,11 @@
 package com.example.springboot.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * 用户实体，简化登录问题
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,11 +1,8 @@
-/*
-Java实体类,判断
- */
-
-
 package com.example.springboot.entity;
 
-
+/**
+ * 调宿信息
+ */
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

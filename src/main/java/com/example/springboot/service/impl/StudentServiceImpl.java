@@ -88,4 +88,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return stuNum;
     }
 
+    /**
+     * 床位信息，查询该学生信息
+     */
+    @Override
+    public Student stuInfo(String username) {
+        QueryWrapper<Student> qw = new QueryWrapper<>();
+        qw.eq("username", username);
+        Student student = studentMapper.selectOne(qw);
+        return student;
+    }
 }

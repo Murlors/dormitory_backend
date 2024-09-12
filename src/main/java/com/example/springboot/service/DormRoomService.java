@@ -42,4 +42,7 @@ public interface DormRoomService extends IService<DormRoom> {
     // 检查床位是否有人
     DormRoom checkBedState(Integer dormRoomId, int bedNum);
 
+    //获取每栋宿舍学生总人数
+    Long getEachBuildingStuNum(int dormBuildId);
+
 }

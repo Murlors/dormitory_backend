@@ -202,4 +202,34 @@ public class DormRoomImpl extends ServiceImpl<DormRoomMapper, DormRoom> implemen
         return dormRoom;
     }
 
+    /**
+     * 获取每栋宿舍学生总人数
+     */
+    @Override
+    public Long getEachBuildingStuNum(int dormBuildId) {
+
+        QueryWrapper<DormRoom> qw1 = new QueryWrapper<>();
+        qw1.eq("dormbuild_id", dormBuildId);
+        qw1.isNotNull("first_bed");
+        Long first_bed = dormRoomMapper.selectCount(qw1);
+
+        QueryWrapper<DormRoom> qw2 = new QueryWrapper<>();
+        qw2.eq("dormbuild_id", dormBuildId);
+        qw2.isNotNull("second_bed");
+        Long second_bed = dormRoomMapper.selectCount(qw2);
+
+        QueryWrapper<DormRoom> qw3 = new QueryWrapper<>();
+        qw3.eq("dormbuild_id", dormBuildId);
+        qw3.isNotNull("third_bed");
+        Long third_bed = dormRoomMapper.selectCount(qw3);
+
+        QueryWrapper<DormRoom> qw4 = new QueryWrapper<>();
+        qw4.eq("dormbuild_id", dormBuildId);
+        qw4.isNotNull("fourth_bed");
+        Long fourth_bed = dormRoomMapper.selectCount(qw4);
+
+        Long count = first_bed + second_bed + third_bed + fourth_bed;
+
+        return count;
+    }
 }

@@ -24,4 +24,8 @@ public interface StudentService extends IService<Student> {
 
     //统计学生人数
     int stuNum();
+
+    //床位信息，查询该学生信息
+    Student stuInfo(String username);
+
 }

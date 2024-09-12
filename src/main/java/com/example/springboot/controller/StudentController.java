@@ -105,4 +105,20 @@ public class StudentController {
         }
     }
 
+
+    /**
+     * 床位信息，查询是否存在该学生
+     * 床位信息，查询床位上的学生信息
+     */
+    @ApiOperation(value = "查询学生是否存在")
+    @ApiImplicitParam(name = "value", value = "学生用户名", required = true, dataType = "String")
+    @GetMapping("/exist/{value}")
+    public Result<?> exist(@PathVariable String value) {
+        Student student = studentService.stuInfo(value);
+        if (student != null) {
+            return Result.success(student);
+        } else {
+            return Result.error("-1", "不存在该学生");
+        }
+    }
 }

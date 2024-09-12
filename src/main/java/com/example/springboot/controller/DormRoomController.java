@@ -168,4 +168,33 @@ public class DormRoomController {
             return Result.error("-1", "不存在该房间");
         }
     }
+
+    @ApiOperation(value = "获取住宿分布人数")
+    @ApiImplicitParam(name = "num", value = "楼宇数", required = true, dataType = "Integer")
+    @GetMapping("/getEachBuildingStuNum/{num}")
+    public Result<?> getEachBuildingStuNum(@PathVariable int num) {
+        ArrayList<Long> arrayList = new ArrayList();
+        for (int i = 1; i <= num; i++) {
+            Long eachBuildingStuNum = dormRoomService.getEachBuildingStuNum(i);
+            arrayList.add(eachBuildingStuNum);
+        }
+
+        if (!arrayList.isEmpty()) {
+            return Result.success(arrayList);
+        } else {
+            return Result.error("-1", "获取人数失败");
+        }
+    }
+
+    @ApiOperation(value = "获取我的宿舍 用于学生端")
+    @ApiImplicitParam(name = "name", value = "学生用户名", required = true, dataType = "String")
+    @GetMapping("/getMyRoom/{name}")
+    public Result<?> getMyRoom(@PathVariable String name) {
+        DormRoom dormRoom = dormRoomService.judgeHadBed(name);
+        if (dormRoom != null) {
+            return Result.success(dormRoom);
+        } else {
+            return Result.error("-1", "不存在该生");
+        }
+    }
 }

@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.entity.DormManager;
 import com.example.springboot.mapper.DormManagerMapper;
 import com.example.springboot.service.DormManagerService;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -20,18 +22,28 @@ public class DormManagerServiceImpl extends ServiceImpl<DormManagerMapper, DormM
      */
     @Resource
     private DormManagerMapper dormManagerMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate; // 注入RedisTemplate
 
     /**
      * 宿管登录
      */
     @Override
     public DormManager dormManagerLogin(String username, String password) {
+        String cacheKey = "dormManager:login:" + username;
 
+        // 尝试从Redis中获取缓存的宿舍管理员登录信息
+        DormManager cachedDormManager = (DormManager) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedDormManager != null) {
+            return cachedDormManager;
+        }
         QueryWrapper<DormManager> qw = new QueryWrapper<>();
         qw.eq("username", username);
         qw.eq("password", password);
         DormManager dormManager = dormManagerMapper.selectOne(qw);
         if (dormManager != null) {
+            // 将查询到的宿舍管理员信息存入Redis，并设置一个合理的过期时间，例如10分钟
+            redisTemplate.opsForValue().set(cacheKey, dormManager, 10, TimeUnit.MINUTES);
             return dormManager;
         } else {
             return null;

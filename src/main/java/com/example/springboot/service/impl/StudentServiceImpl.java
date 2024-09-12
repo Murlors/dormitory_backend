@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -20,6 +21,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      */
     @Resource
     private StudentMapper studentMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate; // 注入RedisTemplate
 
     /**
      * 学生登陆
@@ -27,11 +30,18 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public Student stuLogin(String username, String password) {
 
+        // 尝试从Redis中获取缓存的学生信息
+        Student cachedStudent = (Student) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedStudent != null) {
+            return cachedStudent;
+        }
         QueryWrapper<Student> qw = new QueryWrapper<>();
         qw.eq("username", username);
         qw.eq("password", password);
         Student student = studentMapper.selectOne(qw);
         if (student != null) {
+            // 将查询到的学生信息存入Redis，并设置过期时间，比如5分钟
+            redisTemplate.opsForValue().set(cacheKey, student, 10, TimeUnit.MINUTES);
             return student;
         } else {
             return null;

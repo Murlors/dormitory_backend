@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class DormManagerServiceImpl extends ServiceImpl<DormManagerMapper, DormManager> implements DormManagerService {
-
     /**
      * 注入DAO层对象
      */

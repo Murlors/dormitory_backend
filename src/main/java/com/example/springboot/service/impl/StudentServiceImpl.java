@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
-
     /**
      * 注入DAO层对象
      */

@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/building")
@@ -72,4 +74,14 @@ public class DormBuildController {
         }
     }
 
+    @ApiOperation(value = "获取楼宇信息 用于首页Echarts")
+    @GetMapping("/getBuildingName")
+    public Result<?> getBuildingName() {
+        List<DormBuild> buildingName = dormBuildService.getBuildingId();
+        List<Integer> buildingId = buildingName.stream()
+                .map(dormBuildId -> dormBuildId.getDormBuildId())
+                .collect(Collectors.toList());
+        return !buildingId.isEmpty() ?
+                Result.success(buildingId) : Result.error("-1", "查询失败");
+    }
 }

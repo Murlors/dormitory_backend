@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.springboot.entity.DormBuild;
 
+import java.util.List;
+
 
 public interface DormBuildService extends IService<DormBuild> {
 
@@ -18,4 +20,6 @@ public interface DormBuildService extends IService<DormBuild> {
 
     //删除楼宇信息
     int deleteBuilding(Integer id);
+
+    List<DormBuild> getBuildingId();
 }

@@ -63,4 +63,20 @@ public class DormBuildImpl extends ServiceImpl<DormBuildMapper, DormBuild> imple
         return i;
     }
 
+    /**
+     * 首页 获取建筑名称
+     */
+    @Override
+    public List<DormBuild> getBuildingId() {
+        String cacheKey = "dormBuild:getBuildingId";
+        List<DormBuild> cachedDormBuilds = (List<DormBuild>) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedDormBuilds != null) {
+            return cachedDormBuilds;
+        }
+        QueryWrapper<DormBuild> qw = new QueryWrapper<>();
+        qw.select("dormbuild_id");
+        List<DormBuild> dormBuilds = dormBuildMapper.selectList(qw);
+        redisTemplate.opsForValue().set(cacheKey, dormBuilds, 10, TimeUnit.MINUTES); // 过期时间1小时
+        return dormBuilds;
+    }
 }

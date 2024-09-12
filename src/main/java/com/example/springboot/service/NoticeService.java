@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.springboot.entity.Notice;
 
+import java.util.List;
+
 
 public interface NoticeService extends IService<Notice> {
 
@@ -18,4 +20,7 @@ public interface NoticeService extends IService<Notice> {
 
     //删除通知
     int deleteNotice(Integer id);
+
+    // 首页通知展示
+    List<?> homePageNotice();
 }

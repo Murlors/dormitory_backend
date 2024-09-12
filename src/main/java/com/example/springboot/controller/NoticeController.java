@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/notice")
@@ -70,6 +71,17 @@ public class NoticeController {
             return Result.success(page);
         } else {
             return Result.error("-1", "查询失败");
+        }
+    }
+
+    @ApiOperation(value = "首页公告展示")
+    @GetMapping("/homePageNotice")
+    public Result<?> homePageNotice() {
+        List<?> list = noticeService.homePageNotice();
+        if (list != null) {
+            return Result.success(list);
+        } else {
+            return Result.error("-1", "首页公告查询失败");
         }
     }
 }

@@ -9,6 +9,7 @@ import com.example.springboot.service.NoticeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @Service
@@ -38,6 +39,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         Page page = new Page<>(pageNum, pageSize);
         QueryWrapper<Notice> qw = new QueryWrapper<>();
         qw.like("title", search);
+//        Assert.notNull(qw,"不可为空");
         Page noticePage = noticeMapper.selectPage(page, qw);
         return noticePage;
     }
@@ -58,5 +60,17 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     public int deleteNotice(Integer id) {
         int i = noticeMapper.deleteById(id);
         return i;
+    }
+
+    /**
+     * 首页公告展示
+     */
+    @Override
+    public List<?> homePageNotice() {
+        QueryWrapper<Notice> qw = new QueryWrapper<>();
+        qw.orderByDesc("release_time");
+        List<Notice> noticeList = noticeMapper.selectList(qw);
+        return noticeList;
+
     }
 }

@@ -10,7 +10,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -22,6 +23,8 @@ public class DormBuildImpl extends ServiceImpl<DormBuildMapper, DormBuild> imple
      */
     @Resource
     private DormBuildMapper dormBuildMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate; // 注入RedisTemplate
 
     /**
      * 楼宇添加
@@ -37,12 +40,23 @@ public class DormBuildImpl extends ServiceImpl<DormBuildMapper, DormBuild> imple
      */
     @Override
     public Page find(Integer pageNum, Integer pageSize, String search) {
+        String cacheKey = "dormBuild:cnt" + pageNum + ":" + pageSize + ":" + search;
+        // 更正：从缓存中获取的是查询结果的总条数，不是Page对象
+        Integer total = (Integer) redisTemplate.opsForValue().get(cacheKey);
         Page page = new Page<>(pageNum, pageSize);
         QueryWrapper<DormBuild> qw = new QueryWrapper<>();
         qw.like("DormBuild_id", search);
         // 如果缓存中没有总条数，则查询数据库并缓存结果的总条数
-        Page buildingPage = dormBuildMapper.selectPage(page, qw);
-        return buildingPage;
+        if (total == null) {
+            Page buildingPage = dormBuildMapper.selectPage(page, qw);
+            total = (int) buildingPage.getTotal();
+            redisTemplate.opsForValue().set(cacheKey, total, 10, TimeUnit.MINUTES); // 缓存总条数，过期时间10分钟
+            return buildingPage;
+        } else {
+            // 如果缓存中有总条数，直接设置到Page对象中，然后执行分页查询获取数据
+            page.setTotal(total);
+            return dormBuildMapper.selectPage(page, qw);
+        }
     }
 
     /**

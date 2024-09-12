@@ -34,4 +34,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
     }
 
+    /**
+     * 管理员信息更新
+     */
+    @Override
+    public int updateAdmin(Admin admin) {
+        int i = adminMapper.updateById(admin);
+        return i;
+    }
 }
